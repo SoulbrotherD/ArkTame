@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="ArkTame.Views.EditTameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:viewModels="clr-namespace:ArkTame.ViewModels"
+             xmlns:services="clr-namespace:ArkTame.Services"
+             mc:Ignorable="d" 
+             d:DataContext="{x:Static viewModels:EditTameViewModel.Design}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Margin="{adonisUi:Space 2}" FontWeight="Bold">Edit Tame</TextBlock>
+                <Image Height="200" Margin="50 0 0 0" Source="{Binding SelectedTame.UrlPath, FallbackValue={x:Null}}"></Image>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="1">
+            <StackPanel Orientation="Vertical">
+
+                <GroupBox Header="Name">
+                    <TextBox Text="{Binding Name}"/>
+                </GroupBox>
+
+                <GroupBox Header="Type">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0" 
+                                  Height="{adonisUi:Space 5}"
+                                  IsEditable="True"
+                                  ItemsSource="{Binding AvailableTames}"
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedTame}">
+                        </ComboBox>
+
+                        <Border Grid.Column="1"></Border>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                            <ToggleButton Height="{adonisUi:Space 5}"
+                                          Width="{adonisUi:Space 5}"
+                                          IsChecked="{Binding IsFemale, Mode=OneWay}"
+                                          Command="{Binding SetSexCommand}"
+                                          CommandParameter="{x:Static services:Sex.Female}"
+                                          Style="{DynamicResource {x:Static adonisUi:Styles.DefaultToAccentToggleButton}}">
+                                <fa:ImageAwesome Icon="Solid_Venus" />
+                            </ToggleButton>
+
+                            <ToggleButton Height="{adonisUi:Space 5}"
+                                          Width="{adonisUi:Space 5}"
+                                          IsChecked="{Binding IsMale, Mode=OneWay}"
+                                          Command="{Binding SetSexCommand}"
+                                          CommandParameter="{x:Static services:Sex.Male}"
+                                          Style="{DynamicResource {x:Static adonisUi:Styles.DefaultToAccentToggleButton}}"
+                                          Margin="{adonisUi:Space 1,0,0,0}">
+                                <fa:ImageAwesome Icon="Solid_Mars" />
+                            </ToggleButton>
+
+                            <TextBox 
+                                Margin="10 0 0 0"
+                                Width="170"
+                                IsReadOnly="True" 
+                                Text="{Binding SelectedSex}"></TextBox>
+                        </StackPanel>
+
+                    </Grid>
+
+                </GroupBox>
+
+
+                <GroupBox Header="Values">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Column="1" Grid.RowSpan="4"></Border>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBlock>Health:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Health}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                    />
+                                <fa:SvgAwesome Icon="Solid_HeartPulse" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="2">
+                            <TextBlock>Stamina:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Stamina}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                />
+                                <fa:SvgAwesome Icon="Solid_BoltLightning" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0">
+                            <TextBlock>Oxygen:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Oxygen}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_Lungs" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="2">
+                            <TextBlock>Food:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Food}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_DrumstickBite" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBlock>Weight:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Weight}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_WeightHanging" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="2">
+                            <TextBlock>Melee Damage:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding MeleeDamage}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_HandBackFist" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.Column="0">
+                            <TextBlock>Movement Speed:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding MovementSpeed}"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_TruckFast" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.Column="2">
+                            <TextBlock>Level:</TextBlock>
+                            <Grid >
+                                <TextBox Text="{Binding Level, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         Padding="{adonisUi:Space 4, 0.5}"
+                                         
+                                />
+                                <fa:SvgAwesome Icon="Solid_Calculator" 
+                                               HorizontalAlignment="Left"
+                                               Margin="{adonisUi:Space 1,0,0,0}"
+                                               Height="{adonisUi:Space 2}"></fa:SvgAwesome>
+                            </Grid>
+                        </StackPanel>
+
+
+
+                    </Grid>
+
+                </GroupBox>
+
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
+                        Content="Cancel"
+                        Command="{Binding SaveCancelCommand}"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="{adonisUi:Space 1}" />
+
+                <Button Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
+                        Content="Save"
+                        Command="{Binding SaveCommand}"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Margin="{adonisUi:Space 0, 1, 1, 1}" />
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>
