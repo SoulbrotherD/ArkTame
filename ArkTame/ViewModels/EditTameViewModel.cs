@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading;
 using System.Threading.Tasks;
+using AdonisUI.Controls;
 using ArkTame.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ArkTame.ViewModels;
 
-public partial class EditTameViewModel : ObservableValidator
+public class EditTameViewModel
 {
-    public bool IsMale => _selectedSex == Sex.Male;
+    public bool IsMale => SelectedSex == Sex.Male;
 
-    public bool IsFemale => _selectedSex == Sex.Female;
+    public bool IsFemale => SelectedSex == Sex.Female;
 
     public static EditTameViewModel Design { get; } = new(null);
 
@@ -20,82 +17,16 @@ public partial class EditTameViewModel : ObservableValidator
 
     public int Level => GetLevel();
 
-    [ObservableProperty]
-    [Required]
-    [MinLength(2)]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private string? _name;
-
-    [ObservableProperty]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private TameInfo? _selectedTame;
-    
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsFemale))]
-    [NotifyPropertyChangedFor(nameof(IsMale))]
-    [NotifyDataErrorInfo]
-    [Required]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private Sex? _selectedSex;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _health;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _stamina;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _oxygen;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _food;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _weight;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    private int? _meleeDamage;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Level))]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    [Range(0, 100)]
-    [Required]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private int? _movementSpeed;
+    public string? Name { get; set; }
+    public TameInfo? SelectedTame { get; set; }
+    public Sex? SelectedSex { get; set; }
+    public int? Health { get; set; }
+    public int? Stamina { get; set; }
+    public int? Oxygen { get; set; }
+    public int? Food { get; set; }
+    public int? Weight { get; set; }
+    public int? MeleeDamage { get; set; }
+    public int? MovementSpeed { get; set; }
 
     public EditTameViewModel(TameService? tameService)
     {
@@ -105,36 +36,24 @@ public partial class EditTameViewModel : ObservableValidator
     private int GetLevel()
     {
         var result = 1 +
-            (_health ?? 0) +
-            (_stamina ?? 0) +
-            (_oxygen ?? 0) +
-            (_food ?? 0) +
-            (_weight ?? 0) +
-            (_meleeDamage ?? 0) +
-            (_movementSpeed ?? 0);
+            (Health ?? 0) +
+            (Stamina ?? 0) +
+            (Oxygen ?? 0) +
+            (Food ?? 0) +
+            (Weight ?? 0) +
+            (MeleeDamage ?? 0) +
+            (MovementSpeed ?? 0);
 
         return result;
     }
-    
-    [RelayCommand]
+
     private void SetSex(Sex sex)
     {
-        SelectedSex = sex;
     }
 
-    private bool CanSave()
+    private async void Save()
     {
-        return !HasErrors;
-    }
-
-    [RelayCommand(IncludeCancelCommand = true, CanExecute = nameof(CanSave))]
-    private async Task Save(CancellationToken token)
-    {
-        ValidateAllProperties();
-        if (HasErrors)
-        {
-            return;
-        }
-        await Task.Delay(6000, token);
+        await Task.Delay(6000);
+        MessageBox.Show("Saved", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 }
