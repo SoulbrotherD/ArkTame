@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 
 namespace ArkTame.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel
 {
+
     public static MainWindowViewModel Design { get; } = new(null);
 
     public MainWindowViewModel(EditTameViewModel? editTameViewModel)
@@ -22,7 +18,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     public object? EditView { get; set; } 
 
-    [RelayCommand]
+   
     private void ParseTamableList()
     {
         var doc = new HtmlDocument();
