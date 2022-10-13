@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ArkTame.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MessageBox = AdonisUI.Controls.MessageBox;
 using MessageBoxButton = AdonisUI.Controls.MessageBoxButton;
 using MessageBoxImage = AdonisUI.Controls.MessageBoxImage;
@@ -32,6 +34,8 @@ public partial class EditTameViewModel : ObservableObject
     private TameInfo? _selectedTame;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsMale))]
+    [NotifyPropertyChangedFor(nameof(IsFemale))]
     private Sex? _selectedSex;
 
     [ObservableProperty]
@@ -76,13 +80,25 @@ public partial class EditTameViewModel : ObservableObject
         return result;
     }
 
+    [RelayCommand]
     private void SetSex(Sex sex)
     {
+        SelectedSex = _selectedSex == sex
+            ? null
+            : sex;
     }
 
-    private async void Save()
+    [RelayCommand (IncludeCancelCommand = true)]
+    private async Task Save(CancellationToken token)
     {
-        await Task.Delay(6000);
-        MessageBox.Show("Saved", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+        try
+        {
+            await Task.Delay(6000, token);
+            MessageBox.Show("Saved", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (TaskCanceledException)
+        {
+            MessageBox.Show("Canceled", "Canceled", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 }
